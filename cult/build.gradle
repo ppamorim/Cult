@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+
+android {
+
+  compileSdkVersion Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
+  buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+  defaultConfig {
+    versionCode Integer.parseInt(project.VERSION_CODE)
+    versionName project.VERSION_NAME
+    minSdkVersion Integer.parseInt(project.ANDROID_MIN_SDK)
+    targetSdkVersion Integer.parseInt(project.ANDROID_TARGET_SDK_VERSION)
+  }
+
+  sourceSets {
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src/main/java']
+      res.srcDirs = ['res']
+    }
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+}
+
+dependencies {
+  compile 'com.android.support:appcompat-v7:22.2.0'
+  compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'
+}

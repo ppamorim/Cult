@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dd.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shadow_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:sl_shadowColor="#80000000"
+    app:sl_cornerRadius="2dp">
+
+    <RelativeLayout
+        android:id="@+id/inner_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/raised_selector">
+
+        <LinearLayout
+            android:focusable="true" android:focusableInTouchMode="true"
+            android:layout_width="0px" android:layout_height="0px"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:id="@+id/imageButton"/>
+
+        <EditText
+            android:id="@+id/edittext_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/imageButton"
+            android:layout_toEndOf="@+id/imageButton"
+            android:layout_toLeftOf="@+id/search_icon"
+            android:layout_toStartOf="@+id/search_icon"
+            android:nextFocusUp="@id/edittext_search"
+            android:nextFocusLeft="@id/edittext_search"
+            android:background="@android:color/transparent"/>
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_search"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+    </RelativeLayout>
+
+</com.dd.ShadowLayout>
