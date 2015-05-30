@@ -2,5 +2,6 @@
 <resources>
   <declare-styleable name="cult_view">
     <attr name="toolbar_height" format="reference|dimension"/>
+    <attr name="content_view" format="reference"/>
   </declare-styleable>
 </resources>

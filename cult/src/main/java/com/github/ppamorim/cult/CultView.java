@@ -4,26 +4,30 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import com.dd.ShadowLayout;
-import com.github.ppamorim.cult.util.SlideHelper;
+import com.github.ppamorim.cult.util.AnimationHelper;
 import com.github.ppamorim.cult.util.ViewUtil;
 
-public class CultView extends FrameLayout {
+public class CultView extends RelativeLayout {
 
   private boolean isAnimationRunning;
 
   private int toolbarHeight;
+  private int contentResId;
 
   private ShadowLayout shadowLayout;
   private FrameLayout innerView;
   private Toolbar innerToolbar;
+  private FrameLayout contentInner;
   private Toolbar outToolbar;
-  private FrameLayout content;
+  private FrameLayout contentOut;
+  private View shadow;
 
-  private SlideHelper slideHelper;
+  private AnimationHelper animationHelper;
 
   public CultView(Context context) {
     this(context, null);
@@ -35,7 +39,7 @@ public class CultView extends FrameLayout {
 
   public CultView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    config();
+
     if(attrs != null) {
       getStyle(context, attrs, defStyleAttr);
     }
@@ -43,6 +47,7 @@ public class CultView extends FrameLayout {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
+    config();
     configSizes();
     configSlideHelper();
   }
@@ -53,13 +58,16 @@ public class CultView extends FrameLayout {
     innerView = (FrameLayout) findViewById(R.id.inner_view);
     innerToolbar = (Toolbar) findViewById(R.id.inner_toolbar);
     outToolbar = (Toolbar) findViewById(R.id.out_toolbar);
-    content = (FrameLayout) findViewById(R.id.content);
+    contentOut = (FrameLayout) findViewById(R.id.content_out);
+    contentInner = (FrameLayout) findViewById(R.id.content);
+    shadow = findViewById(R.id.shadow);
+    contentInner.addView(inflate(getContext(), contentResId, null));
     return this;
   }
 
   public void configSlideHelper() {
-    if(slideHelper == null) {
-      slideHelper = new SlideHelper(getContext(), this);
+    if(animationHelper == null) {
+      animationHelper = new AnimationHelper(getContext(), this);
     }
   }
 
@@ -73,6 +81,7 @@ public class CultView extends FrameLayout {
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
     toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, 100);
+    contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
     a.recycle();
   }
 
@@ -83,22 +92,109 @@ public class CultView extends FrameLayout {
     return this;
   }
 
-  public void showSecondView() {
-    slideHelper.slideInTop(outToolbar);
-    slideHelper.slideInBottom(content);
+  public void setOutToolbarLayout(int resourceId) {
+    outToolbar.addView(inflate(getContext(), resourceId, null));
   }
 
-  public void hideSecondView() {
-    slideHelper.slideOutTop(outToolbar);
-    slideHelper.slideOutBottom(content);
+  public void setOutToolbarLayout(View view) {
+    outToolbar.addView(view);
+  }
+
+  public void setOutContentLayout(int resourceId) {
+    contentOut.addView(inflate(getContext(), resourceId, null));
+  }
+
+  public void setOutContentLayout(View view) {
+    contentOut.addView(view);
+  }
+
+  public void showFade() {
+    showFade(0);
+  }
+
+  public void showFade(long duration) {
+    if(verifyAnimationRunning()) {
+      showShadow(duration);
+      animationHelper.fadeIn(outToolbar, duration);
+      showContentSlide(duration);
+    }
+  }
+
+  public void showSlide() {
+    showSlide(0);
+  }
+
+  public void showSlide(long duration) {
+    if(verifyAnimationRunning()) {
+      showShadow(duration);
+      animationHelper.slideInTop(outToolbar, duration);
+      showContentSlide(duration);
+    }
+  }
+
+  public void hideSlide() {
+    hideSlide(0);
+  }
+
+  public void hideSlide(long duration) {
+    if(verifyAnimationRunning()) {
+      hideShadow(duration);
+      animationHelper.slideOutBottom(outToolbar, duration);
+      hideContentSlide(duration);
+    }
+  }
+
+  public void hideFade() {
+    hideFade(0);
+  }
+
+  public void hideFade(long duration) {
+    if(verifyAnimationRunning()) {
+      hideShadow(duration);
+      animationHelper.fadeOut(outToolbar, duration);
+      hideContentSlide(duration);
+    }
+  }
+
+  public void showContentSlide(long duration) {
+    animationHelper.slideInBottom(contentOut, duration);
+  }
+
+  public void hideContentSlide(long duration) {
+    animationHelper.slideOutBottom(contentOut, duration);
+  }
+
+  public void hideShadow(long duration) {
+    animationHelper.fadeOut(shadow, duration);
+  }
+
+  public void showShadow(long duration) {
+    animationHelper.fadeIn(shadow, duration);
   }
 
   public boolean isSecondViewAdded() {
-    return outToolbar.getVisibility() == VISIBLE && content.getVisibility() == VISIBLE;
+    return outToolbar.getVisibility() == VISIBLE && contentOut.getVisibility() == VISIBLE;
   }
 
-  public void resetAnimation() {
-    isAnimationRunning = false;
+  public boolean verifyAnimationRunning() {
+    if(!isAnimationRunning) {
+      isAnimationRunning = true;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public void setAnimationRunning(Boolean isAnimationRunning) {
+    this.isAnimationRunning = isAnimationRunning;
+  }
+
+  public Toolbar getInnerToolbar() {
+    return innerToolbar;
+  }
+
+  public Toolbar getOutToolbar() {
+    return outToolbar;
   }
 
 }

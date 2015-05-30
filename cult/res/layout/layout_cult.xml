@@ -30,6 +30,19 @@
 
     </com.dd.ShadowLayout>
 
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/shadow_layout"/>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/transparent_black"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/out_toolbar"
         android:layout_width="match_parent"
@@ -38,7 +51,7 @@
         android:background="?colorAccent"/>
 
     <FrameLayout
-        android:id="@+id/content"
+        android:id="@+id/content_out"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
