@@ -7,11 +7,9 @@
     android:background="#019FFF">
 
     <com.github.ppamorim.cult.CultView
+        android:id="@+id/cult_view"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:padding="4dp"
-        app:search_padding="0dp">
-
-    </com.github.ppamorim.cult.CultView>
+        android:layout_height="match_parent"
+        app:toolbar_height="56dp"/>
 
 </LinearLayout>

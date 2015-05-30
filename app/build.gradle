@@ -30,4 +30,5 @@ android {
 dependencies {
   compile project(':cult')
   compile 'com.android.support:appcompat-v7:22.2.0'
+  compile 'com.jakewharton:butterknife:6.1.0'
 }
