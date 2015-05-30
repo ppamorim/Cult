@@ -24,7 +24,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 public class BaseActivity extends AppCompatActivity {
 
   private ActionBarDrawerToggle mDrawerToggle;
-
+  private SearchView searchView;
   private FragmentPagerItemAdapter adapter;
 
   @InjectView(R.id.cult_view) CultView cultView;
@@ -93,7 +93,8 @@ public class BaseActivity extends AppCompatActivity {
   }
 
   private void configCultView() {
-    cultView.setOutToolbarLayout(new SearchView().getView(
+    searchView = new SearchView();
+    cultView.setOutToolbarLayout(searchView.getView(
         LayoutInflater.from(this).inflate(R.layout.layout_search, null), searchViewCallback));
     cultView.setOutContentLayout(R.layout.fragment_cult);
   }
