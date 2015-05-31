@@ -90,9 +90,7 @@ public class AnimationHelper {
   private void animationIn(final View view, int animationId, long duration) {
     view.setVisibility(View.VISIBLE);
     Animation animation = AnimationUtils.loadAnimation(context, animationId);
-    if(duration > 0) {
-      animation.setDuration(duration);
-    }
+    setDuration(animation, duration);
     animation.setAnimationListener(new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
         view.setVisibility(View.VISIBLE);
@@ -103,8 +101,7 @@ public class AnimationHelper {
         cultView.setAnimationRunning(false);
       }
 
-      @Override public void onAnimationRepeat(Animation animation) {
-      }
+      @Override public void onAnimationRepeat(Animation animation) { }
     });
     view.startAnimation(animation);
   }
@@ -112,9 +109,7 @@ public class AnimationHelper {
   private void animationOut(final View view, int animationId, long duration) {
     view.setVisibility(View.VISIBLE);
     Animation animation = AnimationUtils.loadAnimation(context, animationId);
-    if(duration > 0) {
-      animation.setDuration(duration);
-    }
+    setDuration(animation, duration);
     animation.setAnimationListener(new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
         view.setVisibility(View.VISIBLE);
@@ -125,10 +120,15 @@ public class AnimationHelper {
         cultView.setAnimationRunning(false);
       }
 
-      @Override public void onAnimationRepeat(Animation animation) {
-      }
+      @Override public void onAnimationRepeat(Animation animation) { }
     });
     view.startAnimation(animation);
+  }
+
+  private void setDuration(Animation animation, long duration) {
+    if (duration > 0) {
+      animation.setDuration(duration);
+    }
   }
 
 }
