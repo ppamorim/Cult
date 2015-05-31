@@ -118,7 +118,7 @@ public class CultView extends FrameLayout {
 
   /**
    *  When the system verify that is needed to
-   *  measure the view, was added a method to 
+   *  measure the view, was added a method to
    *  set the vertical drag range based on
    *  the height of the view
    */
@@ -137,6 +137,13 @@ public class CultView extends FrameLayout {
     }
   }
 
+  /**
+   * Override method to intercept only touch events over the drag view and to cancel the drag when
+   * the action associated to the MotionEvent is equals to ACTION_CANCEL or ACTION_UP.
+   *
+   * @param ev captured.
+   * @return true if the view is going to process the touch event or false if not.
+   */
   @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
     if (!isEnabled()) {
       return false;
@@ -158,6 +165,13 @@ public class CultView extends FrameLayout {
     }
   }
 
+  /**
+   * Override method to dispatch touch
+   * event to the dragged view.
+   *
+   * @param ev captured.
+   * @return true if the touch event is realized over the drag.
+   */
   @Override public boolean onTouchEvent(MotionEvent ev) {
     int actionMasked = MotionEventCompat.getActionMasked(ev);
     if ((actionMasked & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
@@ -170,11 +184,21 @@ public class CultView extends FrameLayout {
     return ViewUtil.isViewHit(this, contentOut, (int) ev.getX(), (int) ev.getY());
   }
 
+  /**
+   * Configure the instance of DragViewHelper
+   */
   public void configDragViewHelper() {
     cultHelperCallback = new CultHelperCallback(this, contentOut);
     dragHelper = ViewDragHelper.create(this, SENSITIVITY, cultHelperCallback);
   }
 
+  /**
+   * This method inflate the base view and
+   * instantiate some layouts based on
+   * this view
+   *
+   * @return instance of CultView
+   */
   private CultView config() {
     addView(inflate(getContext(), R.layout.layout_cult, null));
     shadowLayout = (ShadowLayout) findViewById(R.id.shadow_layout);
@@ -190,12 +214,21 @@ public class CultView extends FrameLayout {
     return this;
   }
 
+  /**
+   * Configure the instance of AnimationHelper
+   * that provide the base animation
+   * of the library
+   */
   public void configSlideHelper() {
     if(animationHelper == null) {
       animationHelper = new AnimationHelper(getContext(), this);
     }
   }
 
+  /**
+   * Configure the size of the Toolbars based
+   * on a height param
+   */
   private void configSizes() {
     RelativeLayout.LayoutParams layoutParams =
         new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight
@@ -205,9 +238,12 @@ public class CultView extends FrameLayout {
         new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight);
     layoutParamsShadow.setMargins(innerPadding, innerPadding, innerPadding, innerPadding);
     shadowLayout.setLayoutParams(layoutParamsShadow);
-
   }
 
+  /**
+   * Initialize some attributes to provide
+   * the height, padding and content to CultView
+   */
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
     if(attrs != null) {
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
@@ -218,6 +254,16 @@ public class CultView extends FrameLayout {
     }
   }
 
+  /**
+   * This method is used to set
+   * the padding to shadowLayout
+   *
+   * @param left left padding
+   * @param top top padding
+   * @param right right padding
+   * @param bottom bottom padding
+   * @return instance of CultView
+   */
   public CultView setInnerPadding(int left, int top, int right, int bottom) {
     shadowLayout.setPadding(ViewUtil.dpToPx(getResources(), left),
         ViewUtil.dpToPx(getResources(), top), ViewUtil.dpToPx(getResources(), right),
@@ -225,18 +271,38 @@ public class CultView extends FrameLayout {
     return this;
   }
 
+  /**
+   * Set the OutToolbar layout based of the @resourceId
+   *
+   * @param resourceId id of layout
+   */
   public void setOutToolbarLayout(int resourceId) {
     outToolbar.addView(inflate(getContext(), resourceId, null));
   }
 
+  /**
+   * Set the OutToolbar layout based of the view instance
+   *
+   * @param view View of layout
+   */
   public void setOutToolbarLayout(View view) {
     outToolbar.addView(view);
   }
 
+  /**
+   * Set the OutContent layout based of the @resourceId
+   *
+   * @param resourceId id of layout
+   */
   public void setOutContentLayout(int resourceId) {
     contentOut.addView(inflate(getContext(), resourceId, null));
   }
 
+  /**
+   * Set the OutContent layout based of the view instance
+   *
+   * @param view View of layout
+   */
   public void setOutContentLayout(View view) {
     contentOut.addView(view);
   }
@@ -305,6 +371,12 @@ public class CultView extends FrameLayout {
     animationHelper.fadeIn(shadow, duration);
   }
 
+  /**
+   * Realize an smooth slide to an slide offset passed as argument. This method is the base of
+   * maximize, minimize and close methods.
+   *
+   * @return true if the view is slided.
+   */
   private boolean smoothSlideTo(View view, int x, int y) {
     if (dragHelper.smoothSlideViewTo(view, x, y)) {
       ViewCompat.postInvalidateOnAnimation(this);
@@ -313,6 +385,9 @@ public class CultView extends FrameLayout {
     return false;
   }
 
+  /**
+   * @return if outToolbar and contentOut is visible
+   */
   public boolean isSecondViewAdded() {
     return outToolbar.getVisibility() == VISIBLE && contentOut.getVisibility() == VISIBLE;
   }
@@ -325,6 +400,13 @@ public class CultView extends FrameLayout {
     return verticalDragRange;
   }
 
+  /**
+   * This class verify if animation is running,
+   * if it isn't running, set is running and
+   * return true
+   *
+   * @return if animation is running
+   */
   public boolean verifyAnimationRunning() {
     if(!isAnimationRunning) {
       isAnimationRunning = true;
