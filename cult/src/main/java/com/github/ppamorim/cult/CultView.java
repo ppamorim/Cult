@@ -2,8 +2,12 @@ package com.github.ppamorim.cult;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,12 +16,18 @@ import com.dd.ShadowLayout;
 import com.github.ppamorim.cult.util.AnimationHelper;
 import com.github.ppamorim.cult.util.ViewUtil;
 
-public class CultView extends RelativeLayout {
+public class CultView extends FrameLayout {
+
+  private static final int INVALID_POINTER = -1;
+  private static final float DEFAULT_DRAG_LIMIT = 0.5f;
+  private static final float SENSITIVITY = 1.0f;
 
   private boolean isAnimationRunning;
 
   private int toolbarHeight;
   private int contentResId;
+  private int activePointerId = INVALID_POINTER;
+  private float verticalDragRange;
 
   private ShadowLayout shadowLayout;
   private FrameLayout innerView;
@@ -27,6 +37,8 @@ public class CultView extends RelativeLayout {
   private FrameLayout contentOut;
   private View shadow;
 
+  private CultHelperCallback cultHelperCallback;
+  private ViewDragHelper dragHelper;
   private AnimationHelper animationHelper;
 
   public CultView(Context context) {
@@ -39,17 +51,79 @@ public class CultView extends RelativeLayout {
 
   public CultView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-
-    if(attrs != null) {
-      getStyle(context, attrs, defStyleAttr);
-    }
+    getStyle(context, attrs, defStyleAttr);
   }
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    config();
-    configSizes();
-    configSlideHelper();
+    if (!isInEditMode()) {
+      config();
+      configSizes();
+      configDragViewHelper();
+      configSlideHelper();
+    }
+  }
+
+  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    int measureWidth = MeasureSpec.makeMeasureSpec(
+        getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
+        MeasureSpec.EXACTLY);
+    int measureHeight = MeasureSpec.makeMeasureSpec(
+        getMeasuredHeight() - getPaddingTop() - getPaddingBottom(),
+        MeasureSpec.EXACTLY);
+    if (contentOut != null) {
+      contentOut.measure(measureWidth, measureHeight);
+    }
+  }
+
+  @Override protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+    super.onSizeChanged(width, height, oldWidth, oldHeight);
+    setVerticalDragRange(height);
+  }
+
+  @Override public void computeScroll() {
+    if (!isInEditMode() && dragHelper != null && dragHelper.continueSettling(true)) {
+      ViewCompat.postInvalidateOnAnimation(this);
+    }
+  }
+
+  @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+    if (!isEnabled()) {
+      return false;
+    }
+    switch (MotionEventCompat.getActionMasked(ev)) {
+      case MotionEvent.ACTION_CANCEL:
+      case MotionEvent.ACTION_UP:
+        dragHelper.cancel();
+        return false;
+      case MotionEvent.ACTION_DOWN:
+        int index = MotionEventCompat.getActionIndex(ev);
+        activePointerId = MotionEventCompat.getPointerId(ev, index);
+        if (activePointerId == INVALID_POINTER) {
+          return false;
+        }
+      default:
+        dragHelper.processTouchEvent(ev);
+        return dragHelper.shouldInterceptTouchEvent(ev);
+    }
+  }
+
+  @Override public boolean onTouchEvent(MotionEvent ev) {
+    int actionMasked = MotionEventCompat.getActionMasked(ev);
+    if ((actionMasked & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
+      activePointerId = MotionEventCompat.getPointerId(ev, actionMasked);
+    }
+    if (activePointerId == INVALID_POINTER) {
+      return false;
+    }
+    dragHelper.processTouchEvent(ev);
+    return ViewUtil.isViewHit(this, contentOut, (int) ev.getX(), (int) ev.getY());
+  }
+
+  public void configDragViewHelper() {
+    cultHelperCallback = new CultHelperCallback(this, contentOut);
+    dragHelper = ViewDragHelper.create(this, SENSITIVITY, cultHelperCallback);
   }
 
   private CultView config() {
@@ -61,7 +135,9 @@ public class CultView extends RelativeLayout {
     contentOut = (FrameLayout) findViewById(R.id.content_out);
     contentInner = (FrameLayout) findViewById(R.id.content);
     shadow = findViewById(R.id.shadow);
-    contentInner.addView(inflate(getContext(), contentResId, null));
+    if(contentResId != 0) {
+      contentInner.addView(inflate(getContext(), contentResId, null));
+    }
     return this;
   }
 
@@ -79,10 +155,12 @@ public class CultView extends RelativeLayout {
   }
 
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
-    toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, 100);
-    contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
-    a.recycle();
+    if(attrs != null) {
+      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
+      toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, 100);
+      contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
+      a.recycle();
+    }
   }
 
   public CultView setInnerPadding(int left, int top, int right, int bottom) {
@@ -172,8 +250,24 @@ public class CultView extends RelativeLayout {
     animationHelper.fadeIn(shadow, duration);
   }
 
+  private boolean smoothSlideTo(View view, int x, int y) {
+    if (dragHelper.smoothSlideViewTo(view, x, y)) {
+      ViewCompat.postInvalidateOnAnimation(this);
+      return true;
+    }
+    return false;
+  }
+
   public boolean isSecondViewAdded() {
     return outToolbar.getVisibility() == VISIBLE && contentOut.getVisibility() == VISIBLE;
+  }
+
+  private void setVerticalDragRange(float verticalDragRange) {
+    this.verticalDragRange = verticalDragRange;
+  }
+
+  public float getVerticalDragRange() {
+    return verticalDragRange;
   }
 
   public boolean verifyAnimationRunning() {

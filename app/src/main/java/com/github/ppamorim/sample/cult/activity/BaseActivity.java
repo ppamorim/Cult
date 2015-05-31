@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 import com.github.ppamorim.cult.CultView;
 import com.github.ppamorim.sample.cult.R;
 import com.github.ppamorim.sample.cult.fragment.CultFragment;
@@ -28,9 +29,9 @@ public class BaseActivity extends AppCompatActivity {
   private FragmentPagerItemAdapter adapter;
 
   @InjectView(R.id.cult_view) CultView cultView;
-  @InjectView(R.id.drawer_left) DrawerLayout drawerLayout;
-  @InjectView(R.id.smart_tab_layout) SmartTabLayout smartTabLayout;
-  @InjectView(R.id.view_pager) ViewPager viewPager;
+  @Optional @InjectView(R.id.drawer_left) DrawerLayout drawerLayout;
+  @Optional @InjectView(R.id.smart_tab_layout) SmartTabLayout smartTabLayout;
+  @Optional @InjectView(R.id.view_pager) ViewPager viewPager;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,12 +50,16 @@ public class BaseActivity extends AppCompatActivity {
 
   @Override protected void onResume() {
     super.onResume();
-    mDrawerToggle.syncState();
+    if(mDrawerToggle != null) {
+      mDrawerToggle.syncState();
+    }
   }
 
   @Override public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    mDrawerToggle.onConfigurationChanged(newConfig);
+    if(mDrawerToggle != null) {
+      mDrawerToggle.onConfigurationChanged(newConfig);
+    }
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,6 +70,9 @@ public class BaseActivity extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
+        if(mDrawerToggle == null) {
+          return false;
+        }
         return mDrawerToggle.onOptionsItemSelected(item);
       case R.id.action_search:
         cultView.showFade();
@@ -88,6 +96,9 @@ public class BaseActivity extends AppCompatActivity {
         .add(R.string.home, CultFragment.class)
         .add(R.string.more, CultFragment.class)
         .create());
+    if(viewPager == null || smartTabLayout == null) {
+      return;
+    }
     viewPager.setAdapter(adapter);
     smartTabLayout.setViewPager(viewPager);
   }
