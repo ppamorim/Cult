@@ -1,6 +1,7 @@
 ![Logo 1][10]
 
 The Cult will provide a new layout for your Toolbar. This allow you to use with a custom SearchView with animation and more.
+
 This library should work on API 14.
 
 ![Demo 1][11]
@@ -64,6 +65,12 @@ dependencies {
   compile 'com.github.ppamorim:cult:0.1'
 }
 ```
+
+Todo
+----
+
+* Fix the bug on DragViewHelper class that not
+ allow a drag possibility the second content.
 
 Contributors
 ------------
