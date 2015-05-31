@@ -41,6 +41,8 @@ Sample
 Import dependency
 --------------------------------
 
+* This library is under development yet, use at your own risk.
+
 This library use `appcompat-v7:22.1.1` and `dmytrodanylyk.shadow-layout`.
 
 But why not to add in MavenCentral?
@@ -59,7 +61,7 @@ repositories {
 }
 
 dependencies {
-  Not uploaded yet :/
+  compile 'com.github.ppamorim:cult:0.1'
 }
 ```
 
