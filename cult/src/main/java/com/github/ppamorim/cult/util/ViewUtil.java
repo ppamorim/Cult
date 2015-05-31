@@ -18,7 +18,6 @@ package com.github.ppamorim.cult.util;
 import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
-import com.github.ppamorim.cult.CultView;
 
 /**
  * This class provide some helpers to

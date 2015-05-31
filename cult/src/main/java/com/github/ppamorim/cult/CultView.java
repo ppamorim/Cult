@@ -208,7 +208,7 @@ public class CultView extends FrameLayout {
     contentOut = (FrameLayout) findViewById(R.id.content_out);
     contentInner = (FrameLayout) findViewById(R.id.content);
     shadow = findViewById(R.id.shadow);
-    if(contentResId != 0) {
+    if (contentResId != 0) {
       contentInner.addView(inflate(getContext(), contentResId, null));
     }
     return this;
@@ -220,7 +220,7 @@ public class CultView extends FrameLayout {
    * of the library
    */
   public void configSlideHelper() {
-    if(animationHelper == null) {
+    if (animationHelper == null) {
       animationHelper = new AnimationHelper(getContext(), this);
     }
   }
@@ -245,7 +245,7 @@ public class CultView extends FrameLayout {
    * the height, padding and content to CultView
    */
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-    if(attrs != null) {
+    if (attrs != null) {
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
       toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, DEFAULT_HEIGHT);
       innerPadding = (int) a.getDimension(R.styleable.cult_view_inner_padding, DEFAULT_PADDING);
@@ -312,7 +312,7 @@ public class CultView extends FrameLayout {
   }
 
   public void showFade(long duration) {
-    if(verifyAnimationRunning()) {
+    if (verifyAnimationRunning()) {
       showShadow(duration);
       animationHelper.fadeIn(outToolbar, duration);
       showContentSlide(duration);
@@ -324,7 +324,7 @@ public class CultView extends FrameLayout {
   }
 
   public void showSlide(long duration) {
-    if(verifyAnimationRunning()) {
+    if (verifyAnimationRunning()) {
       showShadow(duration);
       animationHelper.slideInTop(outToolbar, duration);
       showContentSlide(duration);
@@ -348,7 +348,7 @@ public class CultView extends FrameLayout {
   }
 
   public void hideSlideTop(long duration) {
-    if(verifyAnimationRunning()) {
+    if (verifyAnimationRunning()) {
       hideShadow(duration);
       animationHelper.slideOutTop(outToolbar, duration);
       hideContentSlide(duration);
@@ -360,7 +360,7 @@ public class CultView extends FrameLayout {
   }
 
   public void hideFade(long duration) {
-    if(verifyAnimationRunning()) {
+    if (verifyAnimationRunning()) {
       hideShadow(duration);
       animationHelper.fadeOut(outToolbar, duration);
       hideContentSlide(duration);
@@ -420,7 +420,7 @@ public class CultView extends FrameLayout {
    * @return if animation is running
    */
   public boolean verifyAnimationRunning() {
-    if(!isAnimationRunning) {
+    if (!isAnimationRunning) {
       isAnimationRunning = true;
       return true;
     } else {
