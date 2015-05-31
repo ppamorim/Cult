@@ -1,3 +1,18 @@
+/*
+* Copyright (C) 2015 Pedro Paulo de Amorim
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 package com.github.ppamorim.cult;
 
 import android.content.Context;
@@ -16,6 +31,17 @@ import com.dd.ShadowLayout;
 import com.github.ppamorim.cult.util.AnimationHelper;
 import com.github.ppamorim.cult.util.ViewUtil;
 
+/**
+ * This is the main class of the library
+ * here is inflated some views and added
+ * some params to it. After is added a
+ * isntance os CultHelperCallback to
+ * provide a drag possibility to CultView
+ * (not working yet)
+ *
+ * @author Pedro Paulo Amorim
+ *
+ */
 public class CultView extends FrameLayout {
 
   private static final int INVALID_POINTER = -1;
@@ -57,6 +83,10 @@ public class CultView extends FrameLayout {
     getStyle(context, attrs, defStyleAttr);
   }
 
+  /**
+   * Override method to map some views and to configure the
+   * view height, animation and to initialize DragViewHelper.
+   */
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     if (!isInEditMode()) {
@@ -67,6 +97,12 @@ public class CultView extends FrameLayout {
     }
   }
 
+  /**
+   * Force to measure the #contentOut view
+   *
+   * @param widthMeasureSpec provide the width of this view based on pixels
+   * @param heightMeasureSpec provide the height of this view based on pixels
+   */
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     int measureWidth = MeasureSpec.makeMeasureSpec(
@@ -80,11 +116,21 @@ public class CultView extends FrameLayout {
     }
   }
 
+  /**
+   *  When the system verify that is needed to
+   *  measure the view, was added a method to 
+   *  set the vertical drag range based on
+   *  the height of the view
+   */
   @Override protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
     super.onSizeChanged(width, height, oldWidth, oldHeight);
     setVerticalDragRange(height);
   }
 
+  /**
+   * To ensure the animation is going to work this method has been override to call
+   * postInvalidateOnAnimation if the view is not settled yet.
+   */
   @Override public void computeScroll() {
     if (!isInEditMode() && dragHelper != null && dragHelper.continueSettling(true)) {
       ViewCompat.postInvalidateOnAnimation(this);
