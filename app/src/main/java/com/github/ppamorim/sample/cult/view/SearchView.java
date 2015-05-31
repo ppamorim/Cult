@@ -33,7 +33,7 @@ public class SearchView {
   private SearchViewCallback searchViewCallback;
 
   @OnClick(R.id.cancel) void onClickCancel() {
-    if(searchViewCallback != null) {
+    if (searchViewCallback != null) {
       searchViewCallback.onCancelClick();
     }
   }
