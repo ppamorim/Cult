@@ -3,20 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#019FFF">
+    android:background="@color/blue">
 
-    <LinearLayout
+    <com.github.ppamorim.cult.CultView
+        android:id="@+id/cult_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.github.ppamorim.cult.CultView
-            android:id="@+id/cult_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:toolbar_height="64dp"
-            app:content_view="@layout/layout_base"/>
-
-    </LinearLayout>
+        app:toolbar_height="64dp"
+        app:content_view="@layout/layout_base"/>
 
 </FrameLayout>
