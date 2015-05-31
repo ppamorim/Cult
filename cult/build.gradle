@@ -1,7 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'checkstyle'
 
 dependencies {
+
   compile 'com.android.support:appcompat-v7:22.2.0'
   compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'
 }
