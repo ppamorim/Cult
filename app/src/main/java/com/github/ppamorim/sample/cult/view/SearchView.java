@@ -46,6 +46,9 @@ public class SearchView {
     return view;
   }
 
+  /**
+   * @return text of the edittext
+   */
   public String getText() {
     return searchEditText.getText().toString();
   }
