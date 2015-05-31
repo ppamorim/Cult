@@ -108,7 +108,7 @@ public class BaseActivity extends AppCompatActivity {
 
   @Override public void onBackPressed() {
     if(cultView.isSecondViewAdded()) {
-      cultView.hideSlide();
+      cultView.hideSlideTop();
       return;
     }
     super.onBackPressed();
@@ -138,7 +138,7 @@ public class BaseActivity extends AppCompatActivity {
       new SearchView.SearchViewCallback() {
     @Override public void onCancelClick() {
       hideKeyboard();
-      cultView.hideFade();
+      onBackPressed();
     }
   };
 

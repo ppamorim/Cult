@@ -331,14 +331,26 @@ public class CultView extends FrameLayout {
     }
   }
 
-  public void hideSlide() {
-    hideSlide(0);
+  public void hideSlideBottom() {
+    hideSlideBottom(0);
   }
 
-  public void hideSlide(long duration) {
+  public void hideSlideBottom(long duration) {
     if(verifyAnimationRunning()) {
       hideShadow(duration);
       animationHelper.slideOutBottom(outToolbar, duration);
+      hideContentSlide(duration);
+    }
+  }
+
+  public void hideSlideTop() {
+    hideSlideTop(0);
+  }
+
+  public void hideSlideTop(long duration) {
+    if(verifyAnimationRunning()) {
+      hideShadow(duration);
+      animationHelper.slideOutTop(outToolbar, duration);
       hideContentSlide(duration);
     }
   }
