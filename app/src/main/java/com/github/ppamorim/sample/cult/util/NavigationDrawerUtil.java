@@ -44,7 +44,7 @@ public class NavigationDrawerUtil {
       DrawerLayout drawerLayout,
       final DrawerCallback drawerCallback) {
 
-    if(appCompatActivity == null || drawerLayout == null) {
+    if (appCompatActivity == null || drawerLayout == null) {
       return null;
     }
 
@@ -54,21 +54,21 @@ public class NavigationDrawerUtil {
 
       @Override public void onDrawerOpened(View drawerView) {
         super.onDrawerOpened(drawerView);
-        if(drawerCallback != null) {
+        if (drawerCallback != null) {
           drawerCallback.onDrawerOpened();
         }
       }
 
       @Override public void onDrawerClosed(View drawerView) {
         super.onDrawerClosed(drawerView);
-        if(drawerCallback != null) {
+        if (drawerCallback != null) {
           drawerCallback.onDrawerClosed();
         }
       }
 
       @Override public void onDrawerSlide(View drawerView, float slideOffset) {
         super.onDrawerSlide(drawerView, slideOffset);
-        if(drawerCallback != null) {
+        if (drawerCallback != null) {
           drawerCallback.onDrawerSlide(drawerView, slideOffset);
         }
       }

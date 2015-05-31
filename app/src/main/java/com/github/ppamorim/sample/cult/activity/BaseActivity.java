@@ -74,14 +74,14 @@ public class BaseActivity extends AppCompatActivity {
 
   @Override protected void onResume() {
     super.onResume();
-    if(mDrawerToggle != null) {
+    if (mDrawerToggle != null) {
       mDrawerToggle.syncState();
     }
   }
 
   @Override public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    if(mDrawerToggle != null) {
+    if (mDrawerToggle != null) {
       mDrawerToggle.onConfigurationChanged(newConfig);
     }
   }
@@ -94,10 +94,7 @@ public class BaseActivity extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        if(mDrawerToggle == null) {
-          return false;
-        }
-        return mDrawerToggle.onOptionsItemSelected(item);
+        return mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item);
       case R.id.action_search:
         cultView.showSlide();
         return true;
@@ -107,7 +104,7 @@ public class BaseActivity extends AppCompatActivity {
   }
 
   @Override public void onBackPressed() {
-    if(cultView.isSecondViewAdded()) {
+    if (cultView.isSecondViewAdded()) {
       cultView.hideSlideTop();
       return;
     }
@@ -120,7 +117,7 @@ public class BaseActivity extends AppCompatActivity {
         .add(R.string.home, CultFragment.class)
         .add(R.string.more, CultFragment.class)
         .create());
-    if(viewPager == null || smartTabLayout == null) {
+    if (viewPager == null || smartTabLayout == null) {
       return;
     }
     viewPager.setAdapter(adapter);
@@ -145,7 +142,7 @@ public class BaseActivity extends AppCompatActivity {
   private void hideKeyboard() {
     runOnUiThread(new Runnable() {
       @Override public void run() {
-        if(getCurrentFocus() != null) {
+        if (getCurrentFocus() != null) {
           ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
               .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                   InputMethodManager.HIDE_NOT_ALWAYS);

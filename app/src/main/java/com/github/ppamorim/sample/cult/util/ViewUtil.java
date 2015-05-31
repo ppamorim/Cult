@@ -40,7 +40,7 @@ public class ViewUtil {
     }
     appCompatActivity.setSupportActionBar(toolbar);
     ActionBar actionBar = appCompatActivity.getSupportActionBar();
-    if(actionBar == null) {
+    if (actionBar == null) {
       return;
     }
     actionBar.setTitle(appCompatActivity.getResources().getString(R.string.app_name));
