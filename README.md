@@ -66,7 +66,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.ppamorim:cult:0.1'
+  compile 'com.github.ppamorim:cult:0.1.5'
 }
 ```
 
