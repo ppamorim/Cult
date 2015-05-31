@@ -22,7 +22,6 @@
                 android:id="@+id/smart_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:paddingBottom="4dp"
                 android:background="@color/blue"
                 app:stl_indicatorAlwaysInCenter="false"
                 app:stl_indicatorInFront="false"
@@ -35,7 +34,7 @@
                 app:stl_defaultTabBackground="?attr/selectableItemBackground"
                 app:stl_defaultTabTextAllCaps="false"
                 app:stl_defaultTabTextColor="@color/white"
-                app:stl_defaultTabTextSize="12sp"
+                app:stl_defaultTabTextSize="16sp"
                 app:stl_defaultTabTextHorizontalPadding="12dp"
                 app:stl_defaultTabTextMinWidth="0dp"
                 app:stl_distributeEvenly="true"/>

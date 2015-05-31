@@ -13,9 +13,11 @@ public class NavigationDrawerUtil {
       AppCompatActivity appCompatActivity,
       DrawerLayout drawerLayout,
       final DrawerCallback drawerCallback) {
+
     if(appCompatActivity == null || drawerLayout == null) {
       return null;
     }
+
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.LEFT);
     ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
         appCompatActivity, drawerLayout, R.string.app_name, R.string.app_name) {

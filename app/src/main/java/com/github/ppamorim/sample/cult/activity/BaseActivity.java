@@ -1,5 +1,7 @@
 package com.github.ppamorim.sample.cult.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
@@ -75,7 +78,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         return mDrawerToggle.onOptionsItemSelected(item);
       case R.id.action_search:
-        cultView.showFade();
+        cultView.showSlide();
         return true;
       default:
         return super.onOptionsItemSelected(item);
@@ -84,7 +87,7 @@ public class BaseActivity extends AppCompatActivity {
 
   @Override public void onBackPressed() {
     if(cultView.isSecondViewAdded()) {
-      cultView.hideFade();
+      cultView.hideSlide();
       return;
     }
     super.onBackPressed();
@@ -113,8 +116,21 @@ public class BaseActivity extends AppCompatActivity {
   private SearchView.SearchViewCallback searchViewCallback =
       new SearchView.SearchViewCallback() {
     @Override public void onCancelClick() {
+      hideKeyboard();
       cultView.hideFade();
     }
   };
+
+  private void hideKeyboard() {
+    runOnUiThread(new Runnable() {
+      @Override public void run() {
+        if(getCurrentFocus() != null) {
+          ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+              .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                  InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+      }
+    });
+  }
 
 }

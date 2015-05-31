@@ -19,12 +19,15 @@ import com.github.ppamorim.cult.util.ViewUtil;
 public class CultView extends FrameLayout {
 
   private static final int INVALID_POINTER = -1;
+  private static final int DEFAULT_HEIGHT = 64;
+  private static final int DEFAULT_PADDING = 0;
   private static final float DEFAULT_DRAG_LIMIT = 0.5f;
   private static final float SENSITIVITY = 1.0f;
 
   private boolean isAnimationRunning;
 
   private int toolbarHeight;
+  private int innerPadding;
   private int contentResId;
   private int activePointerId = INVALID_POINTER;
   private float verticalDragRange;
@@ -149,15 +152,21 @@ public class CultView extends FrameLayout {
 
   private void configSizes() {
     RelativeLayout.LayoutParams layoutParams =
-        new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight);
-    shadowLayout.setLayoutParams(layoutParams);
+        new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight
+            + innerPadding * 2);
     outToolbar.setLayoutParams(layoutParams);
+    RelativeLayout.LayoutParams layoutParamsShadow =
+        new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight);
+    layoutParamsShadow.setMargins(innerPadding, innerPadding, innerPadding, innerPadding);
+    shadowLayout.setLayoutParams(layoutParamsShadow);
+
   }
 
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
     if(attrs != null) {
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
-      toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, 100);
+      toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, DEFAULT_HEIGHT);
+      innerPadding = (int) a.getDimension(R.styleable.cult_view_inner_padding, DEFAULT_PADDING);
       contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
       a.recycle();
     }
