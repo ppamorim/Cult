@@ -104,4 +104,4 @@ License
 [5]: https://github.com/JakeWharton/butterknife
 [6]: https://github.com/ogaclejapan/SmartTabLayout
 [10]: ./art/logo.png
-[11]: ./art/cult_app.gif
+[11]: ./art/cult_app_big.gif
