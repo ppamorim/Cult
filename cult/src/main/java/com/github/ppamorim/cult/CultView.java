@@ -336,7 +336,7 @@ public class CultView extends FrameLayout {
   }
 
   public void hideSlideBottom(long duration) {
-    if(verifyAnimationRunning()) {
+    if (verifyAnimationRunning()) {
       hideShadow(duration);
       animationHelper.slideOutBottom(outToolbar, duration);
       hideContentSlide(duration);
