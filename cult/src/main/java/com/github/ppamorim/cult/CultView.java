@@ -17,6 +17,7 @@ package com.github.ppamorim.cult;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -49,6 +50,7 @@ public class CultView extends FrameLayout {
   private static final int DEFAULT_PADDING = 0;
   private static final float DEFAULT_DRAG_LIMIT = 0.5f;
   private static final float SENSITIVITY = 1.0f;
+  private static final String EXPANDED = "expanded";
 
   private boolean isAnimationRunning;
 
@@ -212,6 +214,25 @@ public class CultView extends FrameLayout {
       contentInner.addView(inflate(getContext(), contentResId, null));
     }
     return this;
+  }
+
+  /**
+   * Save the instance of the view when the screen
+   * is rotated.
+   *
+   * @param outState bundle to be saved
+   */
+  public void onSaveInstanceState(Bundle outState) {
+    outState.putBoolean(EXPANDED, false);
+  }
+
+  /**
+   * Restore the saved instance
+   *
+   * @param savedInstanceState saved instance on invalidate
+   */
+  public void restoreState(Bundle savedInstanceState) {
+
   }
 
   /**

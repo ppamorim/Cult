@@ -111,6 +111,10 @@ public class BaseActivity extends AppCompatActivity {
     super.onBackPressed();
   }
 
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+  }
+
   private void initializeViewPager() {
     adapter = new FragmentPagerItemAdapter(
         getSupportFragmentManager(), FragmentPagerItems.with(this)
