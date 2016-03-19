@@ -16,7 +16,6 @@
 package com.github.ppamorim.cult;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -27,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import com.dd.ShadowLayout;
 import com.github.ppamorim.cult.util.AnimationHelper;
 import com.github.ppamorim.cult.util.ViewUtil;
 
@@ -58,7 +56,6 @@ public class CultView extends FrameLayout {
   private int activePointerId = INVALID_POINTER;
   private float verticalDragRange;
 
-  private ShadowLayout shadowLayout;
   private FrameLayout innerView;
   private Toolbar innerToolbar;
   private FrameLayout contentInner;
@@ -200,17 +197,17 @@ public class CultView extends FrameLayout {
    * @return instance of CultView
    */
   private CultView config() {
-    addView(inflate(getContext(), R.layout.layout_cult, null));
-    shadowLayout = (ShadowLayout) findViewById(R.id.shadow_layout);
-    innerView = (FrameLayout) findViewById(R.id.inner_view);
-    innerToolbar = (Toolbar) findViewById(R.id.inner_toolbar);
-    outToolbar = (Toolbar) findViewById(R.id.out_toolbar);
-    contentOut = (FrameLayout) findViewById(R.id.content_out);
-    contentInner = (FrameLayout) findViewById(R.id.content);
-    shadow = findViewById(R.id.shadow);
-    if (contentResId != 0) {
-      contentInner.addView(inflate(getContext(), contentResId, null));
-    }
+    //addView(inflate(getContext(), R.layout.layout_cult, null));
+    //shadowLayout = (ShadowLayout) findViewById(R.id.shadow_layout);
+    //innerView = (FrameLayout) findViewById(R.id.inner_view);
+    //innerToolbar = (Toolbar) findViewById(R.id.inner_toolbar);
+    //outToolbar = (Toolbar) findViewById(R.id.out_toolbar);
+    //contentOut = (FrameLayout) findViewById(R.id.content_out);
+    //contentInner = (FrameLayout) findViewById(R.id.content);
+    //shadow = findViewById(R.id.shadow);
+    //if (contentResId != 0) {
+    //  contentInner.addView(inflate(getContext(), contentResId, null));
+    //}
     return this;
   }
 
@@ -237,7 +234,7 @@ public class CultView extends FrameLayout {
     RelativeLayout.LayoutParams layoutParamsShadow =
         new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, toolbarHeight);
     layoutParamsShadow.setMargins(innerPadding, innerPadding, innerPadding, innerPadding);
-    shadowLayout.setLayoutParams(layoutParamsShadow);
+    //shadowLayout.setLayoutParams(layoutParamsShadow);
   }
 
   /**
@@ -245,13 +242,13 @@ public class CultView extends FrameLayout {
    * the height, padding and content to CultView
    */
   private void getStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-    if (attrs != null) {
-      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
-      toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, DEFAULT_HEIGHT);
-      innerPadding = (int) a.getDimension(R.styleable.cult_view_inner_padding, DEFAULT_PADDING);
-      contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
-      a.recycle();
-    }
+    //if (attrs != null) {
+    //  TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.cult_view, defStyleAttr, 0);
+    //  toolbarHeight = (int) a.getDimension(R.styleable.cult_view_toolbar_height, DEFAULT_HEIGHT);
+    //  innerPadding = (int) a.getDimension(R.styleable.cult_view_inner_padding, DEFAULT_PADDING);
+    //  contentResId = a.getResourceId(R.styleable.cult_view_content_view, 0);
+    //  a.recycle();
+    //}
   }
 
   /**
@@ -265,9 +262,9 @@ public class CultView extends FrameLayout {
    * @return instance of CultView
    */
   public CultView setInnerPadding(int left, int top, int right, int bottom) {
-    shadowLayout.setPadding(ViewUtil.dpToPx(getResources(), left),
-        ViewUtil.dpToPx(getResources(), top), ViewUtil.dpToPx(getResources(), right),
-        ViewUtil.dpToPx(getResources(), bottom));
+    //shadowLayout.setPadding(ViewUtil.dpToPx(getResources(), left),
+    //    ViewUtil.dpToPx(getResources(), top), ViewUtil.dpToPx(getResources(), right),
+    //    ViewUtil.dpToPx(getResources(), bottom));
     return this;
   }
 
