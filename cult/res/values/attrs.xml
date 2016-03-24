@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="cult_view">
-    <attr name="toolbar_height" format="reference|dimension"/>
-    <attr name="inner_padding" format="reference|dimension"/>
-    <attr name="content_view" format="reference"/>
+    <attr name="cult_title" format="reference|string"/>
   </declare-styleable>
 </resources>
